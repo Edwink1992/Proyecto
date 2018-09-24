@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -29,8 +30,6 @@ public class Plaza implements Serializable {
     @ManyToOne
     @JoinColumn(name="IdLugar", nullable=false)
     private Lugar lugar;
-    @Column(name="Numero")
-    private int numero; // numero que tendraa cada plaza en un lugar[1-...]
     @Column(name="Precio")
     private double precio; // precio que tiene la reserva por unidad de tiempo.
     @Column(name="Estado")
@@ -49,9 +48,8 @@ public class Plaza implements Serializable {
   *
   * @param numero el numero irrepetible que tendra cada plaza creada.
   */
-    public Plaza(Lugar lugar,int numero) {
+    public Plaza(Lugar lugar) {
         this.lugar= lugar;
-        this.numero = numero;
         estado = true;
         x++;
     }
@@ -65,16 +63,7 @@ public class Plaza implements Serializable {
     public void setIdPlaza(int idPlaza) {
         this.idPlaza = idPlaza;
     }
-    
-    
-    public int getNumero() {
-        return numero;
-    }
-
-    public void setNumero(int numero) {
-        this.numero = numero;
-    }
-
+ 
     public double getPrecio() {
         return precio;
     }

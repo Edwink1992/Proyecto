@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 
 /**
@@ -34,11 +36,14 @@ public class Reserva implements Serializable {
     @ManyToOne
     @JoinColumn(name="CedulaCliente", nullable=false)
     private Cliente cliente; // Quien adquiere la reserva 
-    @Column(name="Fecha")
+    @Column(name="Fecha",nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date fecha; // fecha y hora en que se realizo la reserva
-    @Column(name="FechaInicio")
+    @Column(name="FechaInicio",nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date fechaInicio;
     @Column(name="FechaFinal")
+    @Temporal(TemporalType.TIMESTAMP)
     private Date fechaFinal;
     @Column(name="Valor")
     private double valor; // valor que tiene la reserva

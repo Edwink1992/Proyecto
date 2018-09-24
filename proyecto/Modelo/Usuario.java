@@ -1,13 +1,13 @@
 package Modelo;
 
 import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+
 
 /**
  * El usuario es quien realiza y usa la reserva
@@ -23,12 +23,12 @@ public class Usuario implements Serializable{
     @Id
     @Column(name = "CedulaUsuario", nullable = false)
     private int cedulaUsuario; // numero de cedulaUsuario del Usuario.
-    @Column(name="Nombre")
+    @Column(name="Nombre",nullable = false, length = 100)
     private String nombre; // nombre del usuario sin apellidos
-    @Column(name="Apellido")
+    @Column(name="Apellido",nullable = false, length = 100)
     private String apellido; // apellido del usuario
-    @Column(name="Telefono")
-    private int telefono; // telefono o celular del Usuario
+    @Column(name="Telefono", length = 100)
+    private String telefono; // telefono o celular del Usuario
  
     
 
@@ -38,7 +38,7 @@ public class Usuario implements Serializable{
     public Usuario() {
     }
 
-    public Usuario(int cedulaUsuario, String nombre, String apellido, int telefono) {
+    public Usuario(int cedulaUsuario, String nombre, String apellido, String telefono) {
         this.cedulaUsuario = cedulaUsuario;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -73,11 +73,11 @@ public class Usuario implements Serializable{
         this.apellido = apellido;
     }
 
-    public int getTelefono() {
+    public String getTelefono() {
         return telefono;
     }
 
-    public void setTelefono(int telefono) {
+    public void setTelefono(String telefono) {
         this.telefono = telefono;
     }  
 }

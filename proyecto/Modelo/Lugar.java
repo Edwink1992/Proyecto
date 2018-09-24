@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -32,12 +33,9 @@ public class Lugar implements Serializable {
     @ManyToOne
     @JoinColumn(name="IdContenedor", nullable=false)
     private Contenedor contenedor;
-    @Column(name="Letra")
-    private char letra; // letra es el nombre que tendra cada lugar[A-Z]
     @Column(name="CantidadPlazas")
     private int cantidadPlazas; // Cantidad de plazas que tendra el lugar.
-    private int numero = 1; // Numero es el nombre que tendra cada plaza en un lugar y que inicia desde 1.
-    @OneToMany(mappedBy="lugar")
+    @OneToMany(mappedBy="lugar",fetch=FetchType.LAZY)
     private List<Plaza> plazas; // Lista de objetos Plaza con el nombre de plazas.
    
   /**
@@ -49,11 +47,11 @@ public class Lugar implements Serializable {
   /**
   * Constructor,se crea un objeto Lugar con parametros
   *
-  * @param letra La letra irrepetible que tendra cada lugar creado
+  * @param Contenedor 
   */
-    public Lugar( Contenedor contenedor,char letra) {
+    public Lugar( Contenedor contenedor) {
         this.contenedor = contenedor;
-        this.letra = letra; 
+         
         ///////////insercion en la base de datos
     }
 
@@ -65,14 +63,6 @@ public class Lugar implements Serializable {
 
     public void setIdLugar(int idLugar) {
         this.idLugar = idLugar;
-    }
-    
-    public char getLetra() {
-        return letra;
-    }
-
-    public void setLetra(char letra) {
-        this.letra = letra;
     }
 
     public int getCantidadPlazas() {
@@ -90,9 +80,9 @@ public class Lugar implements Serializable {
   * Permite crear Plazas de una en una.
   */
     public boolean crearPlaza() {
-        Plaza plaza1 = new Plaza(this,this.numero);
+        Plaza plaza1 = new Plaza(this);
         plazas.add(plaza1);
-        numero++;
+       
         return true;
     }
 
@@ -102,15 +92,15 @@ public class Lugar implements Serializable {
   */
     public void crearPlazas(int nplaza) {
         for (int i = 0; i < nplaza; i++) {
-            Plaza plaza1 = new Plaza(this,this.numero);
+            Plaza plaza1 = new Plaza(this);
             plazas.add(plaza1);
-            numero++;
+            
         }
     }
 
     public void testCrearPlazas(Plaza nplaza) {
             plazas.add(nplaza);
-            numero++;
+           
     }
     
   /**

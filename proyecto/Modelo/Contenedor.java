@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -31,17 +32,16 @@ public class Contenedor implements Serializable {
     private int idContenedor; // IdContenedor del espacio que lo diferencia de los demas.
     @ManyToOne
     @JoinColumn(name="CedulaUsuario", nullable=false)
-    private Usuario Usuario; // Quien adquiere la reserva
-    @Column(name="Tipo")
+    private Usuario usuario; // Quien adquiere la reserva
+    @Column(name="Tipo",nullable = false, length = 100)
     private String tipo; // Genero es el tipo de espacio que se crea(salas de cine, parqueaderos...)
-    @Column(name="Nombre")
+    @Column(name="Nombre", length = 50)
     private String nombre; // Nombre que le damos al espacio a crear
-    @Column(name="Descripcion")
+    @Column(name="Descripcion", length =500)
     private String descripcion; // Descripcion que tendra cada espacio creado.
-    @Column(name="capacidad")
+    @Column(name="Capacidad",length = 10)
     private int capacidad; // Capacidad es el numero de plazas que tiene cada espacio creado.
-    private char letra = 'A'; // Letra es el nombre que tendra cada lugar y que inicia desde A.
-    @OneToMany(mappedBy="contenedor")
+    @OneToMany(mappedBy="contenedor",fetch=FetchType.LAZY)
     private List<Lugar> lugares;// Lista de objetos Lugar que tiene como nombre lugares.
 
   /**
@@ -52,7 +52,7 @@ public class Contenedor implements Serializable {
     
     public Contenedor(int idContenedor, Usuario Usuario, String tipo, String nombre, String descripcion, int capacidad) {
         this.idContenedor = idContenedor;
-        this.Usuario = Usuario;
+        this.usuario = Usuario;
         this.tipo = tipo;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -68,11 +68,11 @@ public class Contenedor implements Serializable {
     }
 
     public Usuario getUsuario() {
-        return Usuario;
+        return usuario;
     }
 
     public void setUsuario(Usuario Usuario) {
-        this.Usuario = Usuario;
+        this.usuario = Usuario;
     }
 
     public String getTipo() {
@@ -107,24 +107,27 @@ public class Contenedor implements Serializable {
         this.capacidad = capacidad;
     }
 
-    public char getLetra() {
-        return letra;
+ 
+ 
+
+    public List<Lugar> getLugares() {
+        return lugares;
     }
 
-    // metodos Get y Set de los atributos.
-    public void setLetra(char letra) {
-        this.letra = letra;
+    public void setLugares(List<Lugar> lugares) {
+        this.lugares = lugares;
     }
 
+    
     // Fin de los metodos GET Y SET de los atributos
     // Inicio de los metodos de la clase Contenedor
     /**
      * Permite crear lugares de uno en uno.
      */
     public void crearLugar() {
-        Lugar lugar1 = new Lugar(this,this.letra);
+        Lugar lugar1 = new Lugar(this);
         lugares.add(lugar1);
-        letra++;  
+         
     }
 
   /**
@@ -133,9 +136,9 @@ public class Contenedor implements Serializable {
   */
     public void crearLugares(int nlugar) {
         for (int i = 0; i < nlugar; i++) {
-           Lugar lugar1 = new Lugar(this,this.letra);
+           Lugar lugar1 = new Lugar(this);
            lugares.add(lugar1);
-           letra++;
+           
         }
        System.out.println("fueron creados: "+ nlugar + " lugares");
     }
